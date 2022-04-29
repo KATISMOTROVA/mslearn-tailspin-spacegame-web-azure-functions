@@ -17,7 +17,7 @@ stages:
 
     variables:
       wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
-      dotnetSdkVersion: '5.x'
+      dotnetSdkVersion: '3.x'
 
     steps:
     - task: UseDotNet@2
@@ -88,7 +88,6 @@ stages:
               appName: '$(WebAppName)'
               appType: webAppLinux
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/Tailspin.SpaceGame.Web.zip'
-
           - task: AzureFunctionApp@1
             displayName: 'Azure Function Deploy: leaderboard'
             inputs:
@@ -105,10 +104,10 @@ stages:
               appName: $(WebAppName)
               resourceGroupName: $(ResourceGroupName)
               appSettings: |
-                    [
-                        {
-                        "name": "AppSettings__LeaderboardFunctionUrl",
-                        "value": "http://$(LeaderboardAppName).azurewebsites.net/api/LeaderboardFunction",
-                        "slotSetting": false
-                        }
-                    ]
+                [
+                  {
+                    "name": "AppSettings:LeaderboardFunctionUrl",
+                    "value": "http://$(LeaderboardAppName).azurewebsites.net/api/LeaderboardFunction",
+                    "slotSetting": false
+                  }
+                ]
